@@ -15,6 +15,7 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Counter Functions'), actions: [
         IconButton(
+            tooltip: 'Reset',
             onPressed: () {
               setState(() {
                 clickCounter = 0;
@@ -39,43 +40,68 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            shape: const StadiumBorder(),
+          CustomButton(
+            icon: Icons.refresh_rounded,
+            tooltip: 'Reset',
             onPressed: () {
               setState(() {
                 clickCounter = 0;
               });
             },
-            child: const Icon(Icons.refresh_outlined),
           ),
           const SizedBox(
             height: 10,
           ),
-          FloatingActionButton(
-            shape: const StadiumBorder(),
+          CustomButton(
+            icon: Icons.exposure_minus_1,
+            tooltip: 'Subtract 1',
+            onPressed: () {
+              setState(() {
+                if (clickCounter > 0) {
+                  setState(() {
+                    clickCounter--;
+                  });
+                }
+              });
+            },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomButton(
+            icon: Icons.plus_one,
+            tooltip: 'Add 1',
             onPressed: () {
               setState(() {
                 clickCounter++;
               });
             },
-            child: const Icon(Icons.plus_one),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          FloatingActionButton(
-            shape: const StadiumBorder(),
-            onPressed: () {
-              if (clickCounter > 0) {
-                setState(() {
-                  clickCounter--;
-                });
-              }
-            },
-            child: const Icon(Icons.exposure_minus_1),
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final String tooltip;
+
+  const CustomButton({
+    super.key,
+    required this.icon,
+    this.onPressed,
+    required this.tooltip,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      shape: const StadiumBorder(),
+      tooltip: tooltip,
+      onPressed: onPressed,
+      child: Icon(icon),
     );
   }
 }
